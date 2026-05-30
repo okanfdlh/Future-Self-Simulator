@@ -5,20 +5,17 @@ import { useRouter } from "next/navigation"
 import { use, useEffect, useMemo, useRef, useState } from "react"
 import { motion } from "framer-motion"
 
+import { useLanguage } from "@/components/language-provider"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { METRICS } from "@/data/decisions"
 import { useRunsStore } from "@/hooks/useRunsStore"
+import { getLocalizedValue, metricLabels, scenarioCopy } from "@/lib/i18n"
 import { scoreRun } from "@/lib/compare"
 import { cn } from "@/lib/utils"
 
 function metricLabel(metric) {
-  if (metric === "happiness") return "Happiness"
-  if (metric === "finance") return "Finance"
-  if (metric === "health") return "Health"
-  if (metric === "social") return "Social"
-  if (metric === "fulfillment") return "Fulfillment"
-  return metric
+  return metricLabels[metric] || { en: metric, id: metric }
 }
 
 function clamp(n, min, max) {
@@ -35,6 +32,7 @@ export default function ResultPage({ params }) {
   const resolvedParams = typeof params?.then === "function" ? use(params) : params
   const runId = resolvedParams?.runId
   const { runs } = useRunsStore()
+  const { locale, t } = useLanguage()
 
   const run = useMemo(() => runs.find((r) => r?.id === runId) || null, [runId, runs])
   const score = useMemo(() => (run ? scoreRun(run) : 0), [run])
@@ -66,7 +64,7 @@ export default function ResultPage({ params }) {
         setVideoError("")
         setVideoStatus((s) => s || "loading")
         const res = await fetch(`/api/pixverse/result/${encodeURIComponent(pixverseId)}`, {
-          cache: "no-store"
+          cache: "no-store",
         })
         const json = await res.json().catch(() => null)
         if (!res.ok) throw new Error(json?.error || `HTTP_${res.status}`)
@@ -118,25 +116,29 @@ export default function ResultPage({ params }) {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-50">
-            Hasil simulasi
+            {t("result.title")}
           </h1>
           <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
-            Scenario{" "}
+            {t("result.scenario")}{" "}
             <span className="font-semibold text-neutral-900 dark:text-neutral-50">
-              {run.scenarioId}
+              {getLocalizedValue(scenarioCopy[run.scenarioId]?.title, locale) || run.scenarioId}
             </span>{" "}
-            • Score{" "}
+            • {t("result.score")}{" "}
             <span className="font-semibold text-neutral-900 dark:text-neutral-50">
               {Math.round(score)}
             </span>
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <Button as={Link} href={`/comparison?ids=${encodeURIComponent(run.id)}`} className="rounded-full">
-            Compare
+          <Button
+            as={Link}
+            href={`/comparison?ids=${encodeURIComponent(run.id)}`}
+            className="rounded-full"
+          >
+            {t("result.compare")}
           </Button>
           <Button as={Link} href="/decisions" variant="outline" className="rounded-full">
-            Try Again
+            {t("result.tryAgain")}
           </Button>
         </div>
       </div>
@@ -145,7 +147,7 @@ export default function ResultPage({ params }) {
         <Card className="overflow-hidden">
           <CardHeader className="border-b border-neutral-200/70 dark:border-neutral-800/70">
             <CardTitle className="flex items-center justify-between gap-3">
-              <span className="text-base">Video</span>
+              <span className="text-base">{t("result.video")}</span>
               {pixverseId ? (
                 <div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
                   <motion.div
@@ -180,7 +182,7 @@ export default function ResultPage({ params }) {
               />
             ) : (
               <div className="rounded-md border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-700 dark:border-neutral-800 dark:bg-neutral-900/40 dark:text-neutral-300">
-                Video URL belum tersedia.
+                {t("result.videoUnavailable")}
               </div>
             )}
           </CardContent>
@@ -188,7 +190,7 @@ export default function ResultPage({ params }) {
 
         <Card>
           <CardHeader className="border-b border-neutral-200/70 dark:border-neutral-800/70">
-            <CardTitle className="text-base">Outcome summary</CardTitle>
+            <CardTitle className="text-base">{t("result.outcomeSummary")}</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-4">
             {METRICS.map((m) => {
@@ -196,8 +198,12 @@ export default function ResultPage({ params }) {
               return (
                 <div key={m} className="grid gap-2">
                   <div className="flex items-center justify-between gap-3 text-sm">
-                    <span className="text-neutral-700 dark:text-neutral-300">{metricLabel(m)}</span>
-                    <span className="font-semibold text-neutral-900 dark:text-neutral-50">{value}</span>
+                    <span className="text-neutral-700 dark:text-neutral-300">
+                      {getLocalizedValue(metricLabel(m), locale)}
+                    </span>
+                    <span className="font-semibold text-neutral-900 dark:text-neutral-50">
+                      {value}
+                    </span>
                   </div>
                   <div className="h-2 w-full rounded-full bg-neutral-200 dark:bg-neutral-800">
                     <div
