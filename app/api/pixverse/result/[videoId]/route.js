@@ -69,7 +69,8 @@ function parseRange(rangeHeader, size) {
 }
 
 export async function GET(req, { params }) {
-  const videoId = params?.videoId
+  const resolvedParams = typeof params?.then === "function" ? await params : params
+  const videoId = resolvedParams?.videoId
   if (!videoId) return NextResponse.json({ error: "videoId is required" }, { status: 400 })
 
   if (isNumericId(videoId)) {
