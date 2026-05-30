@@ -1,5 +1,9 @@
+"use client"
+
 import { Card, CardContent } from "@/components/ui/card"
+import { useLanguage } from "@/components/language-provider"
 import { Smile, DollarSign, Heart, Users, Target } from "lucide-react"
+import { getLocalizedValue, metricLabels } from "@/lib/i18n"
 
 const METRIC_ICONS = {
   happiness: <Smile className="w-5 h-5 text-yellow-500" />,
@@ -9,17 +13,12 @@ const METRIC_ICONS = {
   fulfillment: <Target className="w-5 h-5 text-purple-500" />,
 }
 
-export const METRIC_LABELS = {
-  happiness: "Kebahagiaan",
-  finance: "Finansial",
-  health: "Kesehatan",
-  social: "Sosial",
-  fulfillment: "Kepuasan Hidup",
-}
+export const METRIC_LABELS = metricLabels
 
 export function MetricCard({ metric, value, className = "" }) {
+  const { locale } = useLanguage()
   const icon = METRIC_ICONS[metric]
-  const label = METRIC_LABELS[metric]
+  const label = getLocalizedValue(METRIC_LABELS[metric], locale)
 
   // Normalize value to 0-100 for display (assuming raw weights can be negative/positive)
   // Let's assume the score is already somewhat normalized in the store or just show the number

@@ -1,7 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useState, useSyncExternalStore } from "react"
-import { loadRuns, saveRuns } from "@/lib/storage"
+import { deleteRun, loadRuns, saveRuns } from "@/lib/storage"
 
 const EVENT = "fss:runs"
 const RUNS_KEY = "fss:runs:v1"
@@ -40,5 +40,10 @@ export function useRunsStore() {
     window.dispatchEvent(new Event(EVENT))
   }, [])
 
-  return { runs, setRuns }
+  const removeRun = useCallback((runId) => {
+    deleteRun(runId)
+    window.dispatchEvent(new Event(EVENT))
+  }, [])
+
+  return { runs, setRuns, removeRun }
 }

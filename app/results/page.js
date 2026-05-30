@@ -1,18 +1,21 @@
 "use client"
 
+import Link from "next/link"
 import { useRunsStore } from "@/hooks/useRunsStore"
 import { getScenarioById } from "@/data/scenarios"
+import { useLanguage } from "@/components/language-provider"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { VideoPlayer } from "@/components/video-player"
 import { BarChart2, Plus, Trash2, ArrowRight } from "lucide-react"
-import Link from "next/link"
 import { useState, useMemo } from "react"
 import { METRIC_LABELS } from "@/components/metric-card"
+import { formatDate, getLocalizedValue } from "@/lib/i18n"
 
 export default function ComparisonPage() {
   const { runs, removeRun } = useRunsStore()
   const [selectedIds, setSelectedIds] = useState([])
+  const { locale, t } = useLanguage()
 
   const toggleSelection = (id) => {
     setSelectedIds((prev) =>
@@ -31,15 +34,12 @@ export default function ComparisonPage() {
           <BarChart2 size={40} className="text-zinc-400" />
         </div>
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold">Belum ada simulasi</h1>
-          <p className="text-zinc-500 max-w-md mx-auto">
-            Mulailah perjalananmu dengan membuat keputusan hidup dan lihat berbagai kemungkinan masa
-            depan.
-          </p>
+          <h1 className="text-3xl font-bold">{t("results.emptyTitle")}</h1>
+          <p className="text-zinc-500 max-w-md mx-auto">{t("results.emptyDescription")}</p>
         </div>
         <Link href="/decisions">
           <Button size="lg" className="rounded-full px-8">
-            Mulai Simulasi
+            {t("results.startSimulation")}
           </Button>
         </Link>
       </div>
@@ -50,10 +50,8 @@ export default function ComparisonPage() {
     <div className="container max-w-7xl py-12 px-4 mx-auto space-y-12">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="space-y-1">
-          <h1 className="text-4xl font-bold tracking-tight">Perbandingan Masa Depan</h1>
-          <p className="text-zinc-500">
-            Pilih hingga 3 hasil simulasi untuk dibandingkan secara berdampingan.
-          </p>
+          <h1 className="text-4xl font-bold tracking-tight">{t("results.title")}</h1>
+          <p className="text-zinc-500">{t("results.description")}</p>
         </div>
         {selectedIds.length > 0 && (
           <Button
@@ -61,7 +59,7 @@ export default function ComparisonPage() {
             onClick={() => setSelectedIds([])}
             className="text-zinc-500 hover:text-red-500"
           >
-            Bersihkan pilihan ({selectedIds.length})
+            {t("results.clearSelection")} ({selectedIds.length})
           </Button>
         )}
       </div>
@@ -92,15 +90,28 @@ export default function ComparisonPage() {
 
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-xl font-bold">{scenario.title}</h3>
-                    <p className="text-sm text-zinc-500 line-clamp-2">{scenario.description}</p>
+                    <h3 className="text-xl font-bold">
+                      {getLocalizedValue(
+                        { en: scenario.title, id: scenario.titleId || scenario.title },
+                        locale
+                      )}
+                    </h3>
+                    <p className="text-sm text-zinc-500 line-clamp-2">
+                      {getLocalizedValue(
+                        {
+                          en: scenario.description,
+                          id: scenario.descriptionId || scenario.description,
+                        },
+                        locale
+                      )}
+                    </p>
                   </div>
 
                   <div className="space-y-3 pt-4">
                     {Object.entries(run.metrics || {}).map(([key, value]) => (
                       <div key={key} className="space-y-1">
                         <div className="flex justify-between text-xs font-medium uppercase tracking-wider text-zinc-400">
-                          <span>{METRIC_LABELS[key]}</span>
+                          <span>{getLocalizedValue(METRIC_LABELS[key], locale)}</span>
                           <span>{Math.round(value)}%</span>
                         </div>
                         <div className="h-1.5 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
@@ -115,7 +126,7 @@ export default function ComparisonPage() {
 
                   <Link href={`/results/${run.id}`} className="block">
                     <Button variant="outline" className="w-full rounded-full gap-2 group">
-                      <span>Lihat Detail</span>
+                      <span>{t("results.viewDetail")}</span>
                       <ArrowRight
                         size={16}
                         className="group-hover:translate-x-1 transition-transform"
@@ -131,7 +142,7 @@ export default function ComparisonPage() {
 
       {/* List of All Runs */}
       <div className="space-y-6">
-        <h2 className="text-2xl font-bold">Semua Hasil Simulasi</h2>
+        <h2 className="text-2xl font-bold">{t("results.allResults")}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {runs.map((run) => {
             const scenario = getScenarioById(run.scenarioId)
@@ -161,7 +172,12 @@ export default function ComparisonPage() {
                 </div>
                 <CardHeader className="p-4 space-y-1">
                   <div className="flex justify-between items-start gap-2">
-                    <CardTitle className="text-base truncate">{scenario.title}</CardTitle>
+                    <CardTitle className="text-base truncate">
+                      {getLocalizedValue(
+                        { en: scenario.title, id: scenario.titleId || scenario.title },
+                        locale
+                      )}
+                    </CardTitle>
                     <button
                       onClick={(e) => {
                         e.stopPropagation()
@@ -174,7 +190,7 @@ export default function ComparisonPage() {
                     </button>
                   </div>
                   <p className="text-xs text-zinc-500">
-                    {new Date(run.timestamp).toLocaleDateString()}
+                    {formatDate(run.timestamp, locale, { dateStyle: "medium" })}
                   </p>
                 </CardHeader>
               </Card>
@@ -187,7 +203,7 @@ export default function ComparisonPage() {
                 <div className="p-4 bg-zinc-50 dark:bg-zinc-900 rounded-full group-hover:scale-110 transition-transform">
                   <Plus className="text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100" />
                 </div>
-                <p className="text-sm font-medium text-zinc-500">Simulasi Baru</p>
+                <p className="text-sm font-medium text-zinc-500">{t("results.newSimulation")}</p>
               </CardContent>
             </Card>
           </Link>
