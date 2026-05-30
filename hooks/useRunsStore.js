@@ -4,11 +4,14 @@ import { useCallback, useSyncExternalStore } from "react";
 import { loadRuns, saveRuns } from "@/lib/storage";
 
 const EVENT = "fss:runs";
-const EMPTY_SNAPSHOT = [];
+const RUNS_KEY = "fss:runs:v1";
 
 export function useRunsStore() {
   const subscribe = useCallback((onStoreChange) => {
-    const handler = () => onStoreChange();
+    const handler = (e) => {
+      if (e?.type === "storage" && e.key && e.key !== RUNS_KEY) return;
+      onStoreChange();
+    };
     window.addEventListener(EVENT, handler);
     window.addEventListener("storage", handler);
     return () => {
@@ -18,7 +21,7 @@ export function useRunsStore() {
   }, []);
 
   const getSnapshot = useCallback(() => loadRuns(), []);
-  const getServerSnapshot = useCallback(() => EMPTY_SNAPSHOT, []);
+  const getServerSnapshot = useCallback(() => loadRuns(), []);
 
   const runs = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
