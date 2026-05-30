@@ -1,12 +1,12 @@
 "use client"
 
-import { useEffect, useMemo } from "react"
+import { Suspense, useEffect, useMemo } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 
 import { DECISION_CATEGORIES } from "@/data/decisions"
 import { useDecisionState } from "@/hooks/useDecisionState"
 
-export default function DecisionsEntryPage() {
+function DecisionsEntryPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { state, reset } = useDecisionState()
@@ -36,5 +36,13 @@ export default function DecisionsEntryPage() {
       <div className="h-24 w-full animate-pulse rounded-xl bg-neutral-200 dark:bg-neutral-800" />
       <div className="h-10 w-40 animate-pulse rounded-md bg-neutral-200 dark:bg-neutral-800" />
     </div>
+  )
+}
+
+export default function DecisionsEntryPage() {
+  return (
+    <Suspense fallback={<div className="mx-auto flex max-w-3xl flex-col gap-6 px-4 py-10" />}>
+      <DecisionsEntryPageContent />
+    </Suspense>
   )
 }

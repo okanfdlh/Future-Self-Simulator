@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 
+import { useLanguage } from "@/components/language-provider"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { DECISION_CATEGORIES } from "@/data/decisions"
@@ -20,6 +21,7 @@ export default function SimulationPage() {
   const router = useRouter()
   const { state, isComplete } = useDecisionState()
   const { setRuns } = useRunsStore()
+  const { t } = useLanguage()
 
   const [status, setStatus] = useState("idle")
   const [progress, setProgress] = useState(0)
@@ -51,33 +53,32 @@ export default function SimulationPage() {
     tickRef.current = window.setInterval(() => {
       setProgress((p) => clamp(p + Math.max(1, Math.round((90 - p) / 12)), 0, 90))
     }, 250)
-
-      ; (async () => {
-        try {
-          const res = await fetch("/api/simulations/run", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ state, mode: "single", generateVideo: false })
-          })
-          const json = await res.json().catch(() => null)
-          if (!res.ok) {
-            const msg = typeof json?.error === "string" ? json.error : `HTTP_${res.status}`
-            throw new Error(msg)
-          }
-
-          const nextRuns = Array.isArray(json?.runs) ? json.runs : []
-          setLocalRuns(nextRuns)
-          setRuns((prev) => [...nextRuns, ...prev])
-          setProgress(100)
-          setStatus("done")
-        } catch (e) {
-          setStatus("error")
-          setError(e?.message || "simulation_error")
-        } finally {
-          if (tickRef.current) window.clearInterval(tickRef.current)
-          tickRef.current = null
+    ;(async () => {
+      try {
+        const res = await fetch("/api/simulations/run", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ state, mode: "single", generateVideo: false }),
+        })
+        const json = await res.json().catch(() => null)
+        if (!res.ok) {
+          const msg = typeof json?.error === "string" ? json.error : `HTTP_${res.status}`
+          throw new Error(msg)
         }
-      })()
+
+        const nextRuns = Array.isArray(json?.runs) ? json.runs : []
+        setLocalRuns(nextRuns)
+        setRuns((prev) => [...nextRuns, ...prev])
+        setProgress(100)
+        setStatus("done")
+      } catch (e) {
+        setStatus("error")
+        setError(e?.message || "simulation_error")
+      } finally {
+        if (tickRef.current) window.clearInterval(tickRef.current)
+        tickRef.current = null
+      }
+    })()
 
     return () => {
       if (tickRef.current) window.clearInterval(tickRef.current)
@@ -92,14 +93,16 @@ export default function SimulationPage() {
       <div className="flex items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-50">
-            Menjalankan simulasi
+            {t("simulation.title")}
           </h1>
           <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
-            Menghitung outcome dan menyiapkan future-mu.
+            {t("simulation.description")}
           </p>
         </div>
         <div className="w-40">
-          <div className="text-right text-sm text-neutral-600 dark:text-neutral-400">{progress}%</div>
+          <div className="text-right text-sm text-neutral-600 dark:text-neutral-400">
+            {progress}%
+          </div>
           <div className="mt-1 h-2 w-full rounded-full bg-neutral-200 dark:bg-neutral-800">
             <div
               className="h-2 rounded-full bg-neutral-900 transition-[width] duration-300 dark:bg-neutral-50"
@@ -112,7 +115,7 @@ export default function SimulationPage() {
       <Card className="mt-8 overflow-hidden">
         <CardHeader className="border-b border-neutral-200/70 dark:border-neutral-800/70">
           <CardTitle className="flex items-center justify-between gap-3">
-            <span className="text-base">Processing</span>
+            <span className="text-base">{t("simulation.processing")}</span>
             <motion.div
               aria-hidden="true"
               animate={{ rotate: 360 }}
@@ -128,9 +131,9 @@ export default function SimulationPage() {
             transition={{ duration: 0.25 }}
             className="text-sm text-neutral-700 dark:text-neutral-300"
           >
-            {status === "running" ? "Sedang memproses..." : null}
-            {status === "done" ? "Selesai. Future-mu siap dilihat." : null}
-            {status === "error" ? "Gagal memproses simulasi." : null}
+            {status === "running" ? t("simulation.running") : null}
+            {status === "done" ? t("simulation.done") : null}
+            {status === "error" ? t("simulation.error") : null}
           </motion.div>
 
           {status === "error" ? (
@@ -143,12 +146,15 @@ export default function SimulationPage() {
             <Button
               as={Link}
               href={canView ? resultHref : "#"}
-              className={cn("rounded-full", (!canView || !resultHref) && "pointer-events-none opacity-50")}
+              className={cn(
+                "rounded-full",
+                (!canView || !resultHref) && "pointer-events-none opacity-50"
+              )}
             >
-              View Results
+              {t("simulation.viewResults")}
             </Button>
             <Button as={Link} href="/decisions?resume=1" variant="outline" className="rounded-full">
-              Ubah keputusan
+              {t("simulation.changeChoices")}
             </Button>
           </div>
         </CardContent>

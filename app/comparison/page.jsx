@@ -1,13 +1,15 @@
 "use client"
 
 import Link from "next/link"
-import { useMemo, useState } from "react"
+import { Suspense, useMemo, useState } from "react"
 import { useSearchParams } from "next/navigation"
 
+import { useLanguage } from "@/components/language-provider"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { METRICS } from "@/data/decisions"
 import { useRunsStore } from "@/hooks/useRunsStore"
+import { formatDate, getLocalizedValue, metricLabels, scenarioCopy } from "@/lib/i18n"
 import { compareRuns, scoreRun } from "@/lib/compare"
 import { cn } from "@/lib/utils"
 
@@ -16,12 +18,7 @@ function clamp(n, min, max) {
 }
 
 function metricLabel(metric) {
-  if (metric === "happiness") return "Happiness"
-  if (metric === "finance") return "Finance"
-  if (metric === "health") return "Health"
-  if (metric === "social") return "Social"
-  if (metric === "fulfillment") return "Fulfillment"
-  return metric
+  return metricLabels[metric] || { en: metric, id: metric }
 }
 
 function parseIds(value) {
@@ -32,9 +29,10 @@ function parseIds(value) {
     .filter(Boolean)
 }
 
-export default function ComparisonPage() {
+function ComparisonPageContent() {
   const searchParams = useSearchParams()
   const { runs } = useRunsStore()
+  const { locale, t } = useLanguage()
 
   const defaultSelected = useMemo(() => {
     const ids = parseIds(searchParams?.get("ids"))
@@ -61,34 +59,38 @@ export default function ComparisonPage() {
   }
 
   const gridCols =
-    selectedRuns.length >= 3 ? "lg:grid-cols-3" : selectedRuns.length === 2 ? "lg:grid-cols-2" : "lg:grid-cols-1"
+    selectedRuns.length >= 3
+      ? "lg:grid-cols-3"
+      : selectedRuns.length === 2
+        ? "lg:grid-cols-2"
+        : "lg:grid-cols-1"
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-50">
-            Compare futures
+            {t("comparison.title")}
           </h1>
           <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
-            Pilih 2–3 hasil simulasi untuk dibandingkan.
+            {t("comparison.description")}
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <Button as={Link} href="/decisions" className="rounded-full">
-            Start New Simulation
+            {t("comparison.startNew")}
           </Button>
         </div>
       </div>
 
       <Card className="mt-8">
         <CardHeader className="border-b border-neutral-200/70 dark:border-neutral-800/70">
-          <CardTitle className="text-base">Pilih futures (max 3)</CardTitle>
+          <CardTitle className="text-base">{t("comparison.chooseFutures")}</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-2">
           {runs.length === 0 ? (
             <div className="text-sm text-neutral-700 dark:text-neutral-300">
-              Belum ada hasil simulasi yang tersimpan.
+              {t("comparison.emptyStored")}
             </div>
           ) : (
             <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
@@ -109,10 +111,15 @@ export default function ComparisonPage() {
                     <div className="flex items-start justify-between gap-3">
                       <div className="grid gap-1">
                         <div className="text-sm font-semibold text-neutral-900 dark:text-neutral-50">
-                          {r.scenarioId}
+                          {getLocalizedValue(scenarioCopy[r.scenarioId]?.title, locale) ||
+                            r.scenarioId}
                         </div>
                         <div className="text-xs text-neutral-600 dark:text-neutral-400">
-                          Score {Math.round(scoreRun(r))} • {new Date(r.createdAt).toLocaleString("id-ID")}
+                          {t("result.score")} {Math.round(scoreRun(r))} •{" "}
+                          {formatDate(r.createdAt, locale, {
+                            dateStyle: "medium",
+                            timeStyle: "short",
+                          })}
                         </div>
                       </div>
                       <div
@@ -140,9 +147,11 @@ export default function ComparisonPage() {
             <Card key={r.id} className="overflow-hidden">
               <CardHeader className="border-b border-neutral-200/70 dark:border-neutral-800/70">
                 <CardTitle className="flex items-center justify-between gap-3 text-base">
-                  <span className="capitalize">{r.scenarioId}</span>
+                  <span className="capitalize">
+                    {getLocalizedValue(scenarioCopy[r.scenarioId]?.title, locale) || r.scenarioId}
+                  </span>
                   <span className="text-sm text-neutral-600 dark:text-neutral-400">
-                    Score {Math.round(scoreRun(r))}
+                    {t("result.score")} {Math.round(scoreRun(r))}
                   </span>
                 </CardTitle>
               </CardHeader>
@@ -156,7 +165,7 @@ export default function ComparisonPage() {
                   />
                 ) : (
                   <div className="rounded-md border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-700 dark:border-neutral-800 dark:bg-neutral-900/40 dark:text-neutral-300">
-                    Video URL belum tersedia.
+                    {t("comparison.videoUnavailable")}
                   </div>
                 )}
 
@@ -166,8 +175,12 @@ export default function ComparisonPage() {
                     return (
                       <div key={m} className="grid gap-1">
                         <div className="flex items-center justify-between gap-3 text-xs">
-                          <span className="text-neutral-700 dark:text-neutral-300">{metricLabel(m)}</span>
-                          <span className="font-semibold text-neutral-900 dark:text-neutral-50">{value}</span>
+                          <span className="text-neutral-700 dark:text-neutral-300">
+                            {getLocalizedValue(metricLabel(m), locale)}
+                          </span>
+                          <span className="font-semibold text-neutral-900 dark:text-neutral-50">
+                            {value}
+                          </span>
                         </div>
                         <div className="h-1.5 w-full rounded-full bg-neutral-200 dark:bg-neutral-800">
                           <div
@@ -188,7 +201,7 @@ export default function ComparisonPage() {
       {selectedRuns.length >= 2 ? (
         <Card className="mt-8">
           <CardHeader className="border-b border-neutral-200/70 dark:border-neutral-800/70">
-            <CardTitle className="text-base">Comparison metrics</CardTitle>
+            <CardTitle className="text-base">{t("comparison.comparisonMetrics")}</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-3">
             {METRICS.map((m) => {
@@ -197,17 +210,26 @@ export default function ComparisonPage() {
               const bestRun = best ? selectedRuns.find((r) => r.id === best.id) : null
               const worstRun = worst ? selectedRuns.find((r) => r.id === worst.id) : null
               return (
-                <div key={m} className="grid gap-2 rounded-xl border border-neutral-200 p-4 dark:border-neutral-800">
-                  <div className="text-sm font-semibold text-neutral-900 dark:text-neutral-50">{metricLabel(m)}</div>
+                <div
+                  key={m}
+                  className="grid gap-2 rounded-xl border border-neutral-200 p-4 dark:border-neutral-800"
+                >
+                  <div className="text-sm font-semibold text-neutral-900 dark:text-neutral-50">
+                    {getLocalizedValue(metricLabel(m), locale)}
+                  </div>
                   <div className="grid gap-1 text-sm text-neutral-700 dark:text-neutral-300">
                     <div className="flex flex-wrap items-center justify-between gap-3">
-                      <span className="text-neutral-600 dark:text-neutral-400">Best</span>
+                      <span className="text-neutral-600 dark:text-neutral-400">
+                        {t("comparison.best")}
+                      </span>
                       <span className="font-medium text-neutral-900 dark:text-neutral-50">
                         {bestRun?.scenarioId || "-"} • {best?.value ?? "-"}
                       </span>
                     </div>
                     <div className="flex flex-wrap items-center justify-between gap-3">
-                      <span className="text-neutral-600 dark:text-neutral-400">Worst</span>
+                      <span className="text-neutral-600 dark:text-neutral-400">
+                        {t("comparison.worst")}
+                      </span>
                       <span className="font-medium text-neutral-900 dark:text-neutral-50">
                         {worstRun?.scenarioId || "-"} • {worst?.value ?? "-"}
                       </span>
@@ -223,3 +245,14 @@ export default function ComparisonPage() {
   )
 }
 
+export default function ComparisonPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="mx-auto max-w-6xl px-4 py-10 text-sm text-neutral-600 dark:text-neutral-400" />
+      }
+    >
+      <ComparisonPageContent />
+    </Suspense>
+  )
+}
