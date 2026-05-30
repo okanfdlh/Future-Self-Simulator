@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import { Laptop, Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
@@ -15,8 +16,22 @@ const THEMES = [
 ]
 
 export function ModeToggle() {
+  const [mounted, setMounted] = useState(false)
   const { theme, setTheme } = useTheme()
   const { t } = useLanguage()
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return (
+      <Button variant="outline" size="sm" className="h-9 w-9 rounded-full px-0" disabled>
+        <Sun className="h-4 w-4" />
+      </Button>
+    )
+  }
 
   const activeTheme = THEMES.find((item) => item.value === theme) || THEMES[2]
   const ActiveIcon = activeTheme.icon
