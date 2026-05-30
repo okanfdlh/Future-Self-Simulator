@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useMemo, useState } from "react"
+import { Suspense, useMemo, useState } from "react"
 import { useSearchParams } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
@@ -32,7 +32,7 @@ function parseIds(value) {
     .filter(Boolean)
 }
 
-export default function ComparisonPage() {
+function ComparisonContent() {
   const searchParams = useSearchParams()
   const { runs } = useRunsStore()
 
@@ -61,7 +61,11 @@ export default function ComparisonPage() {
   }
 
   const gridCols =
-    selectedRuns.length >= 3 ? "lg:grid-cols-3" : selectedRuns.length === 2 ? "lg:grid-cols-2" : "lg:grid-cols-1"
+    selectedRuns.length >= 3
+      ? "lg:grid-cols-3"
+      : selectedRuns.length === 2
+        ? "lg:grid-cols-2"
+        : "lg:grid-cols-1"
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
@@ -112,7 +116,8 @@ export default function ComparisonPage() {
                           {r.scenarioId}
                         </div>
                         <div className="text-xs text-neutral-600 dark:text-neutral-400">
-                          Score {Math.round(scoreRun(r))} • {new Date(r.createdAt).toLocaleString("id-ID")}
+                          Score {Math.round(scoreRun(r))} •{" "}
+                          {new Date(r.createdAt).toLocaleString("id-ID")}
                         </div>
                       </div>
                       <div
@@ -166,8 +171,12 @@ export default function ComparisonPage() {
                     return (
                       <div key={m} className="grid gap-1">
                         <div className="flex items-center justify-between gap-3 text-xs">
-                          <span className="text-neutral-700 dark:text-neutral-300">{metricLabel(m)}</span>
-                          <span className="font-semibold text-neutral-900 dark:text-neutral-50">{value}</span>
+                          <span className="text-neutral-700 dark:text-neutral-300">
+                            {metricLabel(m)}
+                          </span>
+                          <span className="font-semibold text-neutral-900 dark:text-neutral-50">
+                            {value}
+                          </span>
                         </div>
                         <div className="h-1.5 w-full rounded-full bg-neutral-200 dark:bg-neutral-800">
                           <div
@@ -197,8 +206,13 @@ export default function ComparisonPage() {
               const bestRun = best ? selectedRuns.find((r) => r.id === best.id) : null
               const worstRun = worst ? selectedRuns.find((r) => r.id === worst.id) : null
               return (
-                <div key={m} className="grid gap-2 rounded-xl border border-neutral-200 p-4 dark:border-neutral-800">
-                  <div className="text-sm font-semibold text-neutral-900 dark:text-neutral-50">{metricLabel(m)}</div>
+                <div
+                  key={m}
+                  className="grid gap-2 rounded-xl border border-neutral-200 p-4 dark:border-neutral-800"
+                >
+                  <div className="text-sm font-semibold text-neutral-900 dark:text-neutral-50">
+                    {metricLabel(m)}
+                  </div>
                   <div className="grid gap-1 text-sm text-neutral-700 dark:text-neutral-300">
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <span className="text-neutral-600 dark:text-neutral-400">Best</span>
@@ -223,3 +237,17 @@ export default function ComparisonPage() {
   )
 }
 
+export default function ComparisonPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="mx-auto max-w-6xl px-4 py-10 animate-pulse">
+          <div className="h-10 w-48 rounded bg-neutral-200 dark:bg-neutral-800" />
+          <div className="mt-4 h-6 w-96 rounded bg-neutral-200 dark:bg-neutral-800" />
+        </div>
+      }
+    >
+      <ComparisonContent />
+    </Suspense>
+  )
+}

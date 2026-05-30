@@ -9,7 +9,7 @@ const METRIC_ICONS = {
   fulfillment: <Target className="w-5 h-5 text-purple-500" />,
 }
 
-const METRIC_LABELS = {
+export const METRIC_LABELS = {
   happiness: "Kebahagiaan",
   finance: "Finansial",
   health: "Kesehatan",
