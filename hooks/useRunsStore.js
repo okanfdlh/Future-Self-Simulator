@@ -1,15 +1,23 @@
 "use client"
 
-import { useCallback, useSyncExternalStore } from "react"
+import { useCallback, useEffect, useState, useSyncExternalStore } from "react"
 import { deleteRun, loadRuns, saveRuns } from "@/lib/storage"
 
 const EVENT = "fss:runs"
-const EMPTY_SNAPSHOT = []
+const RUNS_KEY = "fss:runs:v1"
+const EMPTY_RUNS = []
 
 export function useRunsStore() {
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsMounted(true)
+  }, [])
+
   const subscribe = useCallback((onStoreChange) => {
     const handler = (e) => {
-      if (e?.type === "storage" && e.key && e.key !== "fss:runs:v1") return
+      if (e?.type === "storage" && e.key && e.key !== RUNS_KEY) return
       onStoreChange()
     }
     window.addEventListener(EVENT, handler)
@@ -21,8 +29,10 @@ export function useRunsStore() {
   }, [])
 
   const getSnapshot = useCallback(() => loadRuns(), [])
-  const getServerSnapshot = useCallback(() => EMPTY_SNAPSHOT, [])
-  const runs = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+  const getServerSnapshot = useCallback(() => EMPTY_RUNS, [])
+
+  const rawRuns = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+  const runs = isMounted ? rawRuns : EMPTY_RUNS
 
   const setRuns = useCallback((next) => {
     const value = typeof next === "function" ? next(loadRuns()) : next

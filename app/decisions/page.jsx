@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { DECISION_CATEGORIES } from "@/data/decisions"
 import { useDecisionState } from "@/hooks/useDecisionState"
 
-function DecisionsEntryPageContent() {
+function DecisionsEntryContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { state, reset } = useDecisionState()
@@ -41,8 +41,16 @@ function DecisionsEntryPageContent() {
 
 export default function DecisionsEntryPage() {
   return (
-    <Suspense fallback={<div className="mx-auto flex max-w-3xl flex-col gap-6 px-4 py-10" />}>
-      <DecisionsEntryPageContent />
+    <Suspense
+      fallback={
+        <div className="mx-auto flex max-w-3xl flex-col gap-6 px-4 py-10">
+          <div className="h-10 w-56 animate-pulse rounded-md bg-neutral-200 dark:bg-neutral-800" />
+          <div className="h-24 w-full animate-pulse rounded-xl bg-neutral-200 dark:bg-neutral-800" />
+          <div className="h-10 w-40 animate-pulse rounded-md bg-neutral-200 dark:bg-neutral-800" />
+        </div>
+      }
+    >
+      <DecisionsEntryContent />
     </Suspense>
   )
 }
