@@ -6,7 +6,6 @@ import { use, useEffect, useMemo } from "react"
 import { motion } from "framer-motion"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
-import { useLanguage } from "@/components/language-provider"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import {
@@ -15,8 +14,38 @@ import {
   isValidDecisionCategoryId,
 } from "@/data/decisions"
 import { useDecisionState } from "@/hooks/useDecisionState"
-import { categoryPromptCopy, getLocalizedValue } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
+
+const CATEGORY_COPY = {
+  sleep: {
+    question: "Kamu mau menjalani pola tidur seperti apa?",
+    helper: "Pilihan ini memengaruhi energi, kesehatan, dan stabilitas emosi.",
+  },
+  career: {
+    question: "Kamu mau fokus karir ke arah mana?",
+    helper: "Arah karir memengaruhi finansial, makna, dan ritme hidup.",
+  },
+  finance: {
+    question: "Gaya hidup finansial yang kamu pilih?",
+    helper: "Pilih yang paling menggambarkan kebiasaanmu saat ini.",
+  },
+  balance: {
+    question: "Seberapa seimbang kerja dan hidup yang kamu inginkan?",
+    helper: "Pilihan ini memengaruhi kesehatan, sosial, dan kebahagiaan.",
+  },
+  social: {
+    question: "Bagaimana kamu ingin membangun hubungan sosial?",
+    helper: "Relasi memengaruhi dukungan emosional dan kualitas hidup.",
+  },
+  habits: {
+    question: "Kebiasaan harian apa yang paling dominan?",
+    helper: "Kebiasaan kecil membentuk hasil besar dalam jangka panjang.",
+  },
+  health: {
+    question: "Bagaimana kamu memperlakukan kesehatanmu?",
+    helper: "Kesehatan adalah pondasi untuk semua target lainnya.",
+  },
+}
 
 function progressPercent(currentIndex, total) {
   if (!Number.isFinite(currentIndex) || !Number.isFinite(total) || total <= 0) return 0
@@ -28,7 +57,6 @@ export default function DecisionCategoryPage({ params }) {
   const resolvedParams = typeof params?.then === "function" ? use(params) : params
   const categoryId = resolvedParams?.categoryId
   const { state, setDecision } = useDecisionState()
-  const { locale, t } = useLanguage()
 
   const resolvedCategoryId = useMemo(() => {
     if (typeof categoryId !== "string") return null
@@ -51,7 +79,7 @@ export default function DecisionCategoryPage({ params }) {
     [resolvedCategoryId]
   )
 
-  const copy = resolvedCategoryId ? categoryPromptCopy[resolvedCategoryId] : null
+  const copy = resolvedCategoryId ? CATEGORY_COPY[resolvedCategoryId] : null
 
   useEffect(() => {
     if (!resolvedCategoryId) router.replace("/decisions")
@@ -67,23 +95,16 @@ export default function DecisionCategoryPage({ params }) {
       <div className="flex items-start justify-between gap-4">
         <div>
           <div className="text-sm text-neutral-600 dark:text-neutral-400">
-            {t("decisions.step")} {meta.index + 1}/{meta.total}
+            Step {meta.index + 1}/{meta.total}
           </div>
           <h1 className="mt-1 text-2xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-50">
-            {getLocalizedValue(
-              { en: meta.category?.title, id: meta.category?.titleId || meta.category?.title },
-              locale
-            )}
+            {meta.category?.title}
           </h1>
           {copy?.question ? (
-            <p className="mt-2 text-sm text-neutral-700 dark:text-neutral-300">
-              {getLocalizedValue(copy.question, locale)}
-            </p>
+            <p className="mt-2 text-sm text-neutral-700 dark:text-neutral-300">{copy.question}</p>
           ) : null}
           {copy?.helper ? (
-            <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
-              {getLocalizedValue(copy.helper, locale)}
-            </p>
+            <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">{copy.helper}</p>
           ) : null}
         </div>
         <div className="w-40">
@@ -121,7 +142,7 @@ export default function DecisionCategoryPage({ params }) {
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="text-base font-semibold text-neutral-900 dark:text-neutral-50">
-                    {getLocalizedValue({ en: opt.label, id: opt.labelId || opt.label }, locale)}
+                    {opt.label}
                   </div>
                   <div
                     className={cn(
@@ -147,7 +168,7 @@ export default function DecisionCategoryPage({ params }) {
           className="rounded-full"
         >
           <ChevronLeft className="h-4 w-4" />
-          {t("decisions.back")}
+          Back
         </Button>
 
         {meta.next ? (
@@ -156,7 +177,7 @@ export default function DecisionCategoryPage({ params }) {
             href={canNext ? `/decisions/${meta.next}` : "#"}
             className={cn("rounded-full", !canNext && "pointer-events-none opacity-50")}
           >
-            {t("decisions.next")}
+            Next
             <ChevronRight className="h-4 w-4" />
           </Button>
         ) : (
@@ -165,7 +186,7 @@ export default function DecisionCategoryPage({ params }) {
             href={canNext ? "/simulation" : "#"}
             className={cn("rounded-full", !canNext && "pointer-events-none opacity-50")}
           >
-            {t("decisions.runSimulation")}
+            Run Simulation
             <ChevronRight className="h-4 w-4" />
           </Button>
         )}

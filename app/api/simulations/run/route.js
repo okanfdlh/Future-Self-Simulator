@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server"
 import { buildMultipleRuns, buildRun, isCompleteDecisionState } from "@/lib/decisionEngine"
-import { getFallbackVideoUrl } from "@/data/videos"
 import { buildPrompt } from "@/lib/prompt"
 import { normalizeDecisionState, validateDecisionState } from "@/lib/validation"
 import { pixverseTextToVideo } from "@/lib/pixverse"
+import { getFallbackVideoUrl } from "@/data/videos"
 
 export async function POST(req) {
   const body = await req.json().catch(() => null)
@@ -23,8 +23,12 @@ export async function POST(req) {
   }
 
   const runs = mode === "multiple" ? buildMultipleRuns({ state, count: 3 }) : [buildRun({ state })]
+
+  // Map fallback video filename for each run
   const runsWithFallback = runs.map((run) => {
     const fallbackUrl = getFallbackVideoUrl(run.scenarioId)
+    // If it's a path like /api/pixverse/result/pola-tidur_positive_final.mp4
+    // we extract the filename for the VideoPlayer component
     const videoFilename = fallbackUrl.split("/").pop()
     return { ...run, videoFilename }
   })

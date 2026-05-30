@@ -7,20 +7,17 @@ const negativeUrl = process.env.NEXT_PUBLIC_PIXVERSE_VIDEO_NEGATIVE_URL || ""
 export const SCENARIO_VIDEOS = {
   positive: {
     scenarioId: "positive",
-    title: "Future A (Positive)",
-    titleId: "Masa Depan A (Positif)",
+    title: "Masa Depan A (Positif)",
     url: positiveUrl || base,
   },
   neutral: {
     scenarioId: "neutral",
-    title: "Future B (Neutral)",
-    titleId: "Masa Depan B (Netral)",
+    title: "Masa Depan B (Netral)",
     url: neutralUrl || base,
   },
   negative: {
     scenarioId: "negative",
-    title: "Future C (Negative)",
-    titleId: "Masa Depan C (Negatif)",
+    title: "Masa Depan C (Negatif)",
     url: negativeUrl || base,
   },
 }

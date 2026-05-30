@@ -4,7 +4,6 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { ArrowRight, Film, GitCompare, Sparkles, Wand2 } from "lucide-react"
 
-import { useLanguage } from "@/components/language-provider"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
@@ -24,8 +23,6 @@ const item = {
 }
 
 export default function Home() {
-  const { t } = useLanguage()
-
   return (
     <div className="relative overflow-hidden">
       <motion.div
@@ -59,10 +56,10 @@ export default function Home() {
               <motion.div variants={item} className="flex items-center gap-2">
                 <span className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/70 px-3 py-1 text-xs font-medium text-neutral-700 backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/70 dark:text-neutral-200">
                   <Sparkles className="h-4 w-4" />
-                  {t("home.badge")}
+                  Future Self Simulator
                 </span>
                 <span className="text-xs text-neutral-600 dark:text-neutral-400">
-                  {t("home.badgeMeta")}
+                  Cinematic • Interactive • AI-powered
                 </span>
               </motion.div>
 
@@ -70,23 +67,25 @@ export default function Home() {
                 variants={item}
                 className="text-balance text-4xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-50 sm:text-5xl"
               >
-                {t("home.title")}
+                Simulasikan masa depan berdasarkan pilihan hidupmu.
               </motion.h1>
 
               <motion.p
                 variants={item}
                 className="max-w-xl text-pretty text-base leading-7 text-neutral-700 dark:text-neutral-300 sm:text-lg"
               >
-                {t("home.description")}
+                Pilih keputusan di berbagai kategori, lalu lihat kemungkinan outcome masa depan
+                lewat pengalaman visual sinematik. Cocok untuk refleksi, eksplorasi skenario, dan
+                diskusi bareng teman.
               </motion.p>
 
               <motion.div variants={item} className="flex flex-col gap-3 sm:flex-row">
                 <Button as={Link} href="/decisions" className="rounded-full">
-                  {t("home.primaryCta")}
+                  Start Simulation
                   <ArrowRight className="h-4 w-4" />
                 </Button>
                 <Button as={Link} href="/comparison" variant="outline" className="rounded-full">
-                  {t("home.secondaryCta")}
+                  Compare Futures
                 </Button>
               </motion.div>
 
@@ -95,13 +94,13 @@ export default function Home() {
                 className="grid grid-cols-3 gap-3 pt-2 text-xs text-neutral-600 dark:text-neutral-400"
               >
                 <div className="rounded-lg border border-neutral-200 bg-white/60 px-3 py-2 backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/60">
-                  {t("home.statOne")}
+                  7 kategori keputusan
                 </div>
                 <div className="rounded-lg border border-neutral-200 bg-white/60 px-3 py-2 backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/60">
-                  {t("home.statTwo")}
+                  Multi-outcome
                 </div>
                 <div className="rounded-lg border border-neutral-200 bg-white/60 px-3 py-2 backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/60">
-                  {t("home.statThree")}
+                  Simpan & bandingkan
                 </div>
               </motion.div>
             </div>
@@ -112,28 +111,30 @@ export default function Home() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Wand2 className="h-5 w-5" />
-                    {t("home.previewTitle")}
+                    Preview Flow
                   </CardTitle>
-                  <CardDescription>{t("home.previewDescription")}</CardDescription>
+                  <CardDescription>
+                    Ini preview UI. Video AI & decision engine akan dihubungkan setelah logic siap.
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-3">
                   <div className="grid gap-2 rounded-lg border border-neutral-200 bg-neutral-50 p-4 dark:border-neutral-800 dark:bg-neutral-900/40">
                     <div className="flex items-center justify-between gap-3">
-                      <span className="text-sm font-medium">{t("home.decisionLabel")}</span>
+                      <span className="text-sm font-medium">Keputusan</span>
                       <span className="text-xs text-neutral-600 dark:text-neutral-400">
                         Step 1/7
                       </span>
                     </div>
                     <div className="grid gap-2 sm:grid-cols-3">
-                      <Pill label={t("home.sleepLabel")} value={t("home.balancedValue")} />
-                      <Pill label={t("home.careerLabel")} value={t("home.workLifeValue")} />
-                      <Pill label={t("home.financeLabel")} value={t("home.frugalValue")} />
+                      <Pill label="Tidur" value="Seimbang" />
+                      <Pill label="Karir" value="WLB" />
+                      <Pill label="Finansial" value="Hemat" />
                     </div>
                   </div>
 
                   <div className="grid gap-2 rounded-lg border border-neutral-200 bg-neutral-50 p-4 dark:border-neutral-800 dark:bg-neutral-900/40">
                     <div className="flex items-center justify-between gap-3">
-                      <span className="text-sm font-medium">{t("home.simulationLabel")}</span>
+                      <span className="text-sm font-medium">Simulasi</span>
                       <span className="text-xs text-neutral-600 dark:text-neutral-400">
                         Generating…
                       </span>
@@ -150,9 +151,9 @@ export default function Home() {
 
                   <div className="grid gap-2 rounded-lg border border-neutral-200 bg-neutral-50 p-4 dark:border-neutral-800 dark:bg-neutral-900/40">
                     <div className="flex items-center justify-between gap-3">
-                      <span className="text-sm font-medium">{t("home.resultLabel")}</span>
+                      <span className="text-sm font-medium">Result</span>
                       <span className="text-xs text-neutral-600 dark:text-neutral-400">
-                        {t("home.positiveOutcome")}
+                        Positive outcome
                       </span>
                     </div>
                     <div className="grid gap-2 sm:grid-cols-3">
@@ -179,28 +180,29 @@ export default function Home() {
           >
             <motion.div variants={item} className="flex flex-col gap-2">
               <h2 className="text-2xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-50">
-                {t("home.whyTitle")}
+                Kenapa Future Self Simulator?
               </h2>
               <p className="max-w-2xl text-sm leading-6 text-neutral-700 dark:text-neutral-300">
-                {t("home.whyDescription")}
+                Dibangun untuk pengalaman cepat dan jelas: pilih keputusan, lihat outcome, lalu
+                bandingkan beberapa masa depan.
               </p>
             </motion.div>
 
             <div className="grid gap-4 md:grid-cols-3">
               <FeatureCard
                 icon={Film}
-                title={t("home.featureCinematicTitle")}
-                description={t("home.featureCinematicDescription")}
+                title="Sinematik"
+                description="Output berupa video AI-generated (PixVerse) untuk memperkuat imajinasi dan emosi."
               />
               <FeatureCard
                 icon={GitCompare}
-                title={t("home.featureCompareTitle")}
-                description={t("home.featureCompareDescription")}
+                title="Compare Futures"
+                description="Simpan beberapa hasil simulasi dan bandingkan metriknya secara berdampingan."
               />
               <FeatureCard
                 icon={Wand2}
-                title={t("home.featureSimpleTitle")}
-                description={t("home.featureSimpleDescription")}
+                title="Simple Flow"
+                description="Struktur langkah yang jelas, cocok untuk pengalaman hackathon yang cepat tapi polished."
               />
             </div>
           </motion.div>

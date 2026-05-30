@@ -62,7 +62,7 @@ describe("decisionEngine", () => {
     const run = buildRun({ state })
     const prompt = buildPrompt({ scenarioId: run.scenarioId, state })
     expect(prompt).toContain("User decisions:")
-    expect(prompt).toContain("Sleep Pattern:")
+    expect(prompt).toContain("Pola Tidur:")
   })
 
   it("validates state option ids", () => {

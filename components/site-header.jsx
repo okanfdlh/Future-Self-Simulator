@@ -5,24 +5,20 @@ import { usePathname } from "next/navigation"
 import { useMemo, useState } from "react"
 import { Menu, X } from "lucide-react"
 
-import { LanguageToggle } from "@/components/language-toggle"
-import { useLanguage } from "@/components/language-provider"
-import { ModeToggle } from "@/components/mode-toggle"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 export function SiteHeader() {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
-  const { t } = useLanguage()
 
   const navItems = useMemo(
     () => [
-      { href: "/", label: t("header.home") },
-      { href: "/decisions", label: t("header.startSimulation") },
-      { href: "/comparison", label: t("header.compareFutures") },
+      { href: "/", label: "Home" },
+      { href: "/decisions", label: "Start Simulation" },
+      { href: "/comparison", label: "Compare Futures" },
     ],
-    [t]
+    []
   )
 
   return (
@@ -58,21 +54,16 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <div className="hidden items-center gap-2 md:flex">
-            <LanguageToggle />
-            <ModeToggle />
-          </div>
-
           <div className="hidden md:block">
             <Button as={Link} href="/decisions" className="rounded-full">
-              {t("header.startSimulation")}
+              Mulai
             </Button>
           </div>
 
           <button
             type="button"
             className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-neutral-200 bg-white text-neutral-900 transition-colors hover:bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-50 dark:hover:bg-neutral-900 md:hidden"
-            aria-label={mobileOpen ? t("header.closeMenu") : t("header.openMenu")}
+            aria-label={mobileOpen ? "Tutup menu" : "Buka menu"}
             aria-expanded={mobileOpen}
             aria-controls="mobile-nav"
             onClick={() => setMobileOpen((v) => !v)}
@@ -90,11 +81,6 @@ export function SiteHeader() {
         )}
       >
         <nav className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-3">
-          <div className="flex items-center gap-2 pb-3">
-            <LanguageToggle />
-            <ModeToggle />
-          </div>
-
           {navItems.map((item) => {
             const isActive = pathname === item.href
             return (
@@ -120,7 +106,7 @@ export function SiteHeader() {
               className="w-full rounded-full"
               onClick={() => setMobileOpen(false)}
             >
-              {t("header.startSimulation")}
+              Mulai
             </Button>
           </div>
         </nav>
