@@ -59,23 +59,23 @@
 ### Decision Pages
 | Task ID | Task Description | Status |
 |---------|-------------------|--------|
-| T-221 | Create decision page template layout | ⏳ |
-| T-222 | Build sleep pattern decision page | ⏳ |
-| T-223 | Build career path decision page | ⏳ |
-| T-224 | Build financial lifestyle decision page | ⏳ |
-| T-225 | Build work-life balance decision page | ⏳ |
-| T-226 | Build social relationship decision page | ⏳ |
-| T-227 | Build daily habits decision page | ⏳ |
-| T-228 | Implement progress indicator (step 1/7, etc.) | ⏳ |
-| T-229 | Add next/previous navigation between decision pages | ⏳ |
+| T-221 | Create decision page template layout | ✅ |
+| T-222 | Build sleep pattern decision page | ✅ |
+| T-223 | Build career path decision page | ✅ |
+| T-224 | Build financial lifestyle decision page | ✅ |
+| T-225 | Build work-life balance decision page | ✅ |
+| T-226 | Build social relationship decision page | ✅ |
+| T-227 | Build daily habits decision page | ✅ |
+| T-228 | Implement progress indicator (step 1/7, etc.) | ✅ |
+| T-229 | Add next/previous navigation between decision pages | ✅ |
 
 ### Simulation Page
 | Task ID | Task Description | Status |
 |---------|-------------------|--------|
-| T-231 | Design simulation loading/processing screen | ⏳ |
-| T-232 | Add visual progress indicator | ⏳ |
-| T-233 | Implement animation while simulation runs | ⏳ |
-| T-234 | Create "View Results" CTA | ⏳ |
+| T-231 | Design simulation loading/processing screen | ✅ |
+| T-232 | Add visual progress indicator | ✅ |
+| T-233 | Implement animation while simulation runs | ✅ |
+| T-234 | Create "View Results" CTA | ✅ |
 
 ### Result Page (Single Future)
 | Task ID | Task Description | Status |

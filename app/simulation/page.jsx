@@ -25,22 +25,13 @@ export default function SimulationPage() {
   const [progress, setProgress] = useState(0)
   const [error, setError] = useState("")
   const [runs, setLocalRuns] = useState([])
-  const [showResults, setShowResults] = useState(false)
 
   const startedRef = useRef(false)
   const tickRef = useRef(null)
 
   const primaryRun = runs?.[0] || null
-  const videoUrl = primaryRun?.video?.url || ""
 
-  const summary = useMemo(() => {
-    if (!primaryRun) return null
-    const metrics = primaryRun.metrics || {}
-    const entries = Object.entries(metrics)
-      .filter(([, v]) => typeof v === "number" && Number.isFinite(v))
-      .sort((a, b) => b[1] - a[1])
-    return { scenarioId: primaryRun.scenarioId, metrics: entries }
-  }, [primaryRun])
+  const resultHref = primaryRun ? `/result/${encodeURIComponent(primaryRun.id)}` : ""
 
   useEffect(() => {
     if (!isComplete) {
@@ -150,8 +141,9 @@ export default function SimulationPage() {
 
           <div className="flex flex-wrap items-center gap-2 pt-2">
             <Button
-              className={cn("rounded-full", !canView && "pointer-events-none opacity-50")}
-              onClick={() => setShowResults(true)}
+              as={Link}
+              href={canView ? resultHref : "#"}
+              className={cn("rounded-full", (!canView || !resultHref) && "pointer-events-none opacity-50")}
             >
               View Results
             </Button>
@@ -161,45 +153,6 @@ export default function SimulationPage() {
           </div>
         </CardContent>
       </Card>
-
-      {showResults && canView ? (
-        <Card className="mt-8">
-          <CardHeader>
-            <CardTitle>Hasil</CardTitle>
-          </CardHeader>
-          <CardContent className="grid gap-5">
-            <div className="grid gap-2 text-sm text-neutral-700 dark:text-neutral-300">
-              <div>
-                <span className="text-neutral-600 dark:text-neutral-400">Scenario: </span>
-                <span className="font-semibold text-neutral-900 dark:text-neutral-50">
-                  {summary?.scenarioId}
-                </span>
-              </div>
-              <div className="grid gap-1">
-                {(summary?.metrics || []).map(([k, v]) => (
-                  <div key={k} className="flex items-center justify-between gap-3">
-                    <span className="capitalize">{k}</span>
-                    <span className="font-medium text-neutral-900 dark:text-neutral-50">{v}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {videoUrl ? (
-              <video
-                className="w-full rounded-xl border border-neutral-200 dark:border-neutral-800"
-                src={videoUrl}
-                controls
-                playsInline
-              />
-            ) : (
-              <div className="rounded-md border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-700 dark:border-neutral-800 dark:bg-neutral-900/40 dark:text-neutral-300">
-                Video URL belum tersedia. Set NEXT_PUBLIC_PIXVERSE_VIDEO_*_URL untuk fallback video per-scenario.
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      ) : null}
     </div>
   )
 }
