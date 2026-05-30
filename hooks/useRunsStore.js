@@ -1,0 +1,35 @@
+"use client"
+
+import { useCallback, useSyncExternalStore } from "react"
+import { loadRuns, saveRuns } from "@/lib/storage"
+
+const EVENT = "fss:runs"
+const RUNS_KEY = "fss:runs:v1"
+
+export function useRunsStore() {
+  const subscribe = useCallback((onStoreChange) => {
+    const handler = (e) => {
+      if (e?.type === "storage" && e.key && e.key !== RUNS_KEY) return
+      onStoreChange()
+    }
+    window.addEventListener(EVENT, handler)
+    window.addEventListener("storage", handler)
+    return () => {
+      window.removeEventListener(EVENT, handler)
+      window.removeEventListener("storage", handler)
+    }
+  }, [])
+
+  const getSnapshot = useCallback(() => loadRuns(), [])
+  const getServerSnapshot = useCallback(() => loadRuns(), [])
+
+  const runs = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+
+  const setRuns = useCallback((next) => {
+    const value = typeof next === "function" ? next(loadRuns()) : next
+    saveRuns(value)
+    window.dispatchEvent(new Event(EVENT))
+  }, [])
+
+  return { runs, setRuns }
+}
