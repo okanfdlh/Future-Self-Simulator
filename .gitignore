@@ -24,7 +24,6 @@
 .DS_Store
 *.pem
 member1.md
-/pixverse-output
 
 # debug
 npm-debug.log*
@@ -38,6 +37,9 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# pixverse
+pixverse-output/
 
 # typescript
 *.tsbuildinfo

@@ -80,20 +80,20 @@
 ### Result Page (Single Future)
 | Task ID | Task Description | Status |
 |---------|-------------------|--------|
-| T-241 | Build result page layout | ⏳ |
-| T-242 | Display AI-generated video | ⏳ |
-| T-243 | Show outcome summary (happiness, finance, health, etc.) | ⏳ |
-| T-244 | Create "Compare" and "Try Again" buttons | ⏳ |
-| T-245 | Save simulation result to local storage | ⏳ |
+| T-241 | Build result page layout | ✅ |
+| T-242 | Display AI-generated video | ✅ |
+| T-243 | Show outcome summary (happiness, finance, health, etc.) | ✅ |
+| T-244 | Create "Compare" and "Try Again" buttons | ✅ |
+| T-245 | Save simulation result to local storage | ✅ |
 
 ### Comparison Page
 | Task ID | Task Description | Status |
 |---------|-------------------|--------|
-| T-251 | Build comparison page layout | ⏳ |
-| T-252 | Display 2-3 saved future videos side by side | ⏳ |
-| T-253 | Create comparison metrics (radar chart or bar chart) | ⏳ |
-| T-254 | Allow user to select which futures to compare | ⏳ |
-| T-255 | Add "Start New Simulation" button | ⏳ |
+| T-251 | Build comparison page layout | ✅ |
+| T-252 | Display 2-3 saved future videos side by side | ✅ |
+| T-253 | Create comparison metrics (radar chart or bar chart) | ✅ |
+| T-254 | Allow user to select which futures to compare | ✅ |
+| T-255 | Add "Start New Simulation" button | ✅ |
 
 ---
 
