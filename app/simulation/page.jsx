@@ -7,6 +7,7 @@ import { motion } from "framer-motion"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { DECISION_CATEGORIES } from "@/data/decisions"
 import { useDecisionState } from "@/hooks/useDecisionState"
 import { useRunsStore } from "@/hooks/useRunsStore"
 import { cn } from "@/lib/utils"
@@ -43,7 +44,9 @@ export default function SimulationPage() {
 
   useEffect(() => {
     if (!isComplete) {
-      router.replace("/decisions")
+      const firstIncomplete = DECISION_CATEGORIES.find((c) => !state?.[c.id])
+      const target = firstIncomplete?.id || DECISION_CATEGORIES[0]?.id || "sleep"
+      router.replace(`/decisions/${target}`)
       return
     }
 
@@ -58,32 +61,32 @@ export default function SimulationPage() {
       setProgress((p) => clamp(p + Math.max(1, Math.round((90 - p) / 12)), 0, 90))
     }, 250)
 
-    ;(async () => {
-      try {
-        const res = await fetch("/api/simulations/run", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ state, mode: "single", generateVideo: false })
-        })
-        const json = await res.json().catch(() => null)
-        if (!res.ok) {
-          const msg = typeof json?.error === "string" ? json.error : `HTTP_${res.status}`
-          throw new Error(msg)
-        }
+      ; (async () => {
+        try {
+          const res = await fetch("/api/simulations/run", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ state, mode: "single", generateVideo: false })
+          })
+          const json = await res.json().catch(() => null)
+          if (!res.ok) {
+            const msg = typeof json?.error === "string" ? json.error : `HTTP_${res.status}`
+            throw new Error(msg)
+          }
 
-        const nextRuns = Array.isArray(json?.runs) ? json.runs : []
-        setLocalRuns(nextRuns)
-        setRuns((prev) => [...nextRuns, ...prev])
-        setProgress(100)
-        setStatus("done")
-      } catch (e) {
-        setStatus("error")
-        setError(e?.message || "simulation_error")
-      } finally {
-        if (tickRef.current) window.clearInterval(tickRef.current)
-        tickRef.current = null
-      }
-    })()
+          const nextRuns = Array.isArray(json?.runs) ? json.runs : []
+          setLocalRuns(nextRuns)
+          setRuns((prev) => [...nextRuns, ...prev])
+          setProgress(100)
+          setStatus("done")
+        } catch (e) {
+          setStatus("error")
+          setError(e?.message || "simulation_error")
+        } finally {
+          if (tickRef.current) window.clearInterval(tickRef.current)
+          tickRef.current = null
+        }
+      })()
 
     return () => {
       if (tickRef.current) window.clearInterval(tickRef.current)
@@ -152,7 +155,7 @@ export default function SimulationPage() {
             >
               View Results
             </Button>
-            <Button as={Link} href="/decisions" variant="outline" className="rounded-full">
+            <Button as={Link} href="/decisions?resume=1" variant="outline" className="rounded-full">
               Ubah keputusan
             </Button>
           </div>
@@ -200,4 +203,3 @@ export default function SimulationPage() {
     </div>
   )
 }
-

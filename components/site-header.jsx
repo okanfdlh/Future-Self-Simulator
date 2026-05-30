@@ -44,7 +44,7 @@ export function SiteHeader() {
                 className={cn(
                   "rounded-md px-3 py-2 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-900 dark:hover:text-neutral-50",
                   isActive &&
-                    "bg-neutral-100 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-50"
+                  "bg-neutral-100 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-50"
                 )}
               >
                 {item.label}
@@ -90,7 +90,7 @@ export function SiteHeader() {
                 className={cn(
                   "rounded-md px-3 py-2 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-900 dark:hover:text-neutral-50",
                   isActive &&
-                    "bg-neutral-100 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-50"
+                  "bg-neutral-100 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-50"
                 )}
                 onClick={() => setMobileOpen(false)}
               >
