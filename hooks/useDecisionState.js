@@ -5,12 +5,13 @@ import { DECISION_CATEGORIES } from "@/data/decisions";
 import { clearDecisionState, loadDecisionState, saveDecisionState } from "@/lib/storage";
 
 const EVENT = "fss:decisions";
+const DECISIONS_KEY = "fss:decisions:v1";
 const EMPTY_SNAPSHOT = {};
 
 export function useDecisionState() {
     const subscribe = useCallback((onStoreChange) => {
         const handler = (e) => {
-            if (e?.type === "storage" && e.key && e.key !== "fss:decisions:v1") return;
+            if (e?.type === "storage" && e.key && e.key !== DECISIONS_KEY) return;
             onStoreChange();
         };
         window.addEventListener(EVENT, handler);
@@ -22,7 +23,7 @@ export function useDecisionState() {
     }, []);
 
     const getSnapshot = useCallback(() => loadDecisionState() || EMPTY_SNAPSHOT, []);
-    const getServerSnapshot = useCallback(() => EMPTY_SNAPSHOT, []);
+    const getServerSnapshot = useCallback(() => loadDecisionState() || EMPTY_SNAPSHOT, []);
     const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
     const setDecision = useCallback((categoryId, optionId) => {
