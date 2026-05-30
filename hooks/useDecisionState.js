@@ -5,6 +5,7 @@ import { DECISION_CATEGORIES } from "@/data/decisions";
 import { clearDecisionState, loadDecisionState, saveDecisionState } from "@/lib/storage";
 
 const EVENT = "fss:decisions";
+const EMPTY_SNAPSHOT = {};
 
 export function useDecisionState() {
     const subscribe = useCallback((onStoreChange) => {
@@ -20,11 +21,12 @@ export function useDecisionState() {
         };
     }, []);
 
-    const getSnapshot = useCallback(() => loadDecisionState() || {}, []);
-    const state = useSyncExternalStore(subscribe, getSnapshot, () => ({}));
+    const getSnapshot = useCallback(() => loadDecisionState() || EMPTY_SNAPSHOT, []);
+    const getServerSnapshot = useCallback(() => EMPTY_SNAPSHOT, []);
+    const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
     const setDecision = useCallback((categoryId, optionId) => {
-        const next = { ...(loadDecisionState() || {}), [categoryId]: optionId };
+        const next = { ...(loadDecisionState() || EMPTY_SNAPSHOT), [categoryId]: optionId };
         saveDecisionState(next);
         window.dispatchEvent(new Event(EVENT));
     }, []);

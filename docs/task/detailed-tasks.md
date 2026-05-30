@@ -102,33 +102,33 @@
 ### Decision Engine
 | Task ID | Task Description | Status |
 |---------|-------------------|--------|
-| T-301 | Design state structure for user decisions | ⏳ |
-| T-302 | Implement decision engine logic (calculate outcome based on decisions) | ⏳ |
-| T-303 | Write unit tests for decision engine | ⏳ |
-| T-304 | Create custom hook for managing user decisions | ⏳ |
+| T-301 | Design state structure for user decisions | ✅ |
+| T-302 | Implement decision engine logic (calculate outcome based on decisions) | ✅ |
+| T-303 | Write unit tests for decision engine | ✅ |
+| T-304 | Create custom hook for managing user decisions | ✅ |
 
 ### Simulation Flow
 | Task ID | Task Description | Status |
 |---------|-------------------|--------|
 | T-311 | Implement simulation progress tracking | ⏳ |
-| T-312 | Create logic to map outcome to video | ⏳ |
-| T-313 | Handle simulation completion and navigation to results | ⏳ |
+| T-312 | Create logic to map outcome to video | ✅ |
+| T-313 | Handle simulation completion and navigation to results | ✅ |
 
 ### Local Storage
 | Task ID | Task Description | Status |
 |---------|-------------------|--------|
-| T-321 | Implement local storage hook for saving simulations | ⏳ |
-| T-322 | Create functions to retrieve saved simulations | ⏳ |
+| T-321 | Implement local storage hook for saving simulations | ✅ |
+| T-322 | Create functions to retrieve saved simulations | ✅ |
 | T-323 | Write unit tests for storage utilities | ⏳ |
 
 ### PixVerse Integration
 | Task ID | Task Description | Status |
 |---------|-------------------|--------|
-| T-331 | Research PixVerse API documentation | ⏳ |
-| T-332 | Set up API client for PixVerse | ⏳ |
-| T-333 | Implement video generation request logic | ⏳ |
-| T-334 | Implement polling for video generation status | ⏳ |
-| T-335 | Add error handling for API failures | ⏳ |
+| T-331 | Research PixVerse API documentation | ✅ |
+| T-332 | Set up API client for PixVerse | ✅ |
+| T-333 | Implement video generation request logic | ✅ |
+| T-334 | Implement polling for video generation status | ✅ |
+| T-335 | Add error handling for API failures | ✅ |
 
 ---
 
