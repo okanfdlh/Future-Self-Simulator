@@ -1,318 +1,36 @@
-# Future Self Simulator
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-> **Lihat konsekuensi dari pilihan hidupmu.**
+## Getting Started
 
-Future Self Simulator adalah pengalaman interaktif sinematik yang memungkinkan pengguna mengeksplorasi berbagai kemungkinan masa depan berdasarkan keputusan hidup yang mereka pilih melalui video AI-generated.
+First, run the development server:
 
-Dibangun menggunakan:
-
-* TRAE
-* PixVerse
-* Next.js
-* TailwindCSS
-* shadcn/ui
-
----
-
-# Permasalahan
-
-Banyak orang sulit membayangkan dampak jangka panjang dari keputusan kecil yang mereka ambil setiap hari.
-
-Pertanyaan seperti:
-
-* Apa yang terjadi jika saya terus mengorbankan tidur demi pekerjaan?
-* Bagaimana jika saya memilih uang dibanding kesehatan?
-* Bagaimana jika saya mengambil jalan hidup yang berbeda?
-
-sering kali sulit divisualisasikan.
-
-Future Self Simulator mengubah keputusan abstrak tersebut menjadi pengalaman visual interaktif.
-
----
-
-# Solusi
-
-Pengguna membuat berbagai keputusan hidup.
-
-Aplikasi kemudian menampilkan berbagai kemungkinan masa depan melalui pengalaman sinematik berbasis video AI.
-
-Alih-alih hanya menonton video, pengguna dapat:
-
-* membuat keputusan
-* melihat konsekuensi
-* membandingkan berbagai masa depan
-* mengeksplorasi berbagai kemungkinan hidup
-
----
-
-# Pengalaman Utama Pengguna
-
-Alur pengguna:
-
-```text
-Halaman Awal
-
-↓
-
-Memilih Keputusan Hidup
-
-↓
-
-Membuat Simulasi Masa Depan
-
-↓
-
-Menonton Hasil Masa Depan
-
-↓
-
-Membandingkan Masa Depan
-
-↓
-
-Mencoba Pilihan Berbeda
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
----
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-# Fitur Utama
+You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
-## Sistem Pengambilan Keputusan
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-Pengguna menentukan:
+## Learn More
 
-* pola tidur
-* jalur karir
-* gaya hidup finansial
-* work-life balance
-* hubungan sosial
-* kebiasaan sehari-hari
+To learn more about Next.js, take a look at the following resources:
 
----
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-## Visualisasi Masa Depan Sinematik
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-Setiap hasil simulasi divisualisasikan menggunakan:
+## Deploy on Vercel
 
-* video AI dari PixVerse
-* storytelling sinematik
-* berbagai skenario masa depan
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
----
-
-## Perbandingan Masa Depan
-
-Pengguna dapat membandingkan:
-
-* tingkat kebahagiaan
-* kondisi finansial
-* kesehatan
-* kehidupan sosial
-* tingkat kepuasan hidup
-
----
-
-## Multiple Outcome Simulation
-
-Pengguna dapat:
-
-* mencoba ulang simulasi
-* mengeksplorasi pilihan berbeda
-* melihat berbagai konsekuensi hidup
-
----
-
-# Integrasi Video AI
-
-Video tidak hanya digunakan sebagai media pemutaran.
-
-Video digunakan sebagai:
-
-* visualisasi konsekuensi
-* alat storytelling
-* feedback terhadap keputusan pengguna
-* pengalaman emosional interaktif
-
----
-
-# Workflow Produksi Video
-
-```text
-Ide
-
-↓
-
-Storyboard Menggunakan TRAE
-
-↓
-
-Perencanaan Shot
-
-↓
-
-Generate Video Dengan PixVerse
-
-↓
-
-Evaluasi & Iterasi
-
-↓
-
-Penyusunan Video Final
-
-↓
-
-Integrasi Ke Dalam Aplikasi
-```
-
----
-
-# Struktur Video
-
-Total durasi:
-
-Minimal 30 detik
-
-Contoh struktur:
-
-Shot 1
-
-Pengenalan karakter
-
-Shot 2
-
-Pilihan hidup pertama
-
-Shot 3
-
-Masa depan A
-
-Shot 4
-
-Masa depan B
-
-Shot 5
-
-Perbandingan hasil akhir
-
----
-
-# Penggunaan TRAE
-
-TRAE digunakan secara mendalam untuk:
-
-* brainstorming ide
-* pembuatan storyboard
-* pembuatan shot list
-* prompt engineering
-* coding aplikasi
-* debugging
-* automasi workflow
-* orkestrasi pengembangan
-
----
-
-# Teknologi Yang Digunakan
-
-Frontend:
-
-* Next.js
-* React
-* TailwindCSS
-* shadcn/ui
-* Framer Motion
-
-Deployment:
-
-* Vercel
-
-Video:
-
-* PixVerse V6
-
-AI Workflow:
-
-* TRAE SOLO
-
----
-
-# Arsitektur Sistem
-
-```text
-Input Pengguna
-
-↓
-
-Decision Engine
-
-↓
-
-Mapping Scenario
-
-↓
-
-Pemilihan Video
-
-↓
-
-Interactive Future Experience
-```
-
----
-
-# Mengapa Project Ini Dibuat
-
-Sebagian besar orang tidak dapat melihat konsekuensi masa depan dari keputusan yang mereka ambil hari ini.
-
-Future Self Simulator membantu pengguna:
-
-> mengalami masa depan sebelum benar-benar menjalaninya.
-
----
-
-# Demo Flow
-
-1. Membuka halaman utama
-2. Memulai simulasi
-3. Memilih keputusan hidup
-4. Membuat simulasi masa depan
-5. Menonton hasil masa depan
-6. Membandingkan hasil
-7. Mencoba skenario lain
-
----
-
-# Peningkatan Efisiensi Menggunakan TRAE
-
-TRAE membantu mempercepat:
-
-* pembuatan ide
-* refinement prompt
-* pembuatan UI
-* coding
-* debugging
-* iterasi produk
-
-Estimasi peningkatan produktivitas:
-
-70%+
-
----
-
-# Dibuat Untuk
-
-TRAE SOLO Hackathon
-
-Video Generation Track
-
-Powered by:
-
-* TRAE
-* PixVerse
-
----
-
-# Tagline
-
-> Masa depan tidak diprediksi.
-> Masa depan disimulasikan.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

@@ -1,9 +1,0 @@
-node_modules
-.next
-out
-build
-coverage
-.vercel
-package-lock.json
-docs
-*.md
