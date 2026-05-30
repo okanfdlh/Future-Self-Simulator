@@ -32,7 +32,7 @@
 | T-102 | Create mock decision data with options and weights | Anggota 2 | ⏳ |
 | T-103 | Define future outcome scenarios (positive, neutral, negative) | Anggota 2 | ⏳ |
 | T-104 | Create mapping between decisions and outcomes | Anggota 2 | ⏳ |
-| T-105 | Create placeholder video metadata (title, description, duration, video URL) | Anggota 3 | ⏳ |
+| T-105 | Create placeholder video metadata (title, description, duration, video URL) | Anggota 3 | ✅ |
 | T-106 | Configure environment variables (if needed) | Anggota 2 | ⏳ |
 
 ---
@@ -45,8 +45,8 @@
 | T-201 | Create main app layout with header/footer | ⏳ |
 | T-202 | Build navigation bar/menu (Home, Start Simulation, Compare Futures) | ⏳ |
 | T-203 | Implement responsive navigation (mobile hamburger menu) | ⏳ |
-| T-204 | Create reusable Button component | ⏳ |
-| T-205 | Create reusable Card component | ⏳ |
+| T-204 | Create reusable Button component | ✅ |
+| T-205 | Create reusable Card component | ✅ |
 
 ### Home Page
 | Task ID | Task Description | Status |
@@ -137,27 +137,27 @@
 ### Storyboarding
 | Task ID | Task Description | Status |
 |---------|-------------------|--------|
-| T-401 | Brainstorm and outline all story scenarios | ⏳ |
-| T-402 | Create storyboard for positive outcome | ⏳ |
-| T-403 | Create storyboard for neutral outcome | ⏳ |
-| T-404 | Create storyboard for negative outcome | ⏳ |
-| T-405 | Create shot list for each storyboard | ⏳ |
+| T-401 | Brainstorm and outline all story scenarios | ✅ |
+| T-402 | Create storyboard for positive outcome | ✅ |
+| T-403 | Create storyboard for neutral outcome | ✅ |
+| T-404 | Create storyboard for negative outcome | ✅ |
+| T-405 | Create shot list for each storyboard | ✅ |
 
 ### Video Generation
 | Task ID | Task Description | Status |
 |---------|-------------------|--------|
-| T-411 | Write prompts for PixVerse video generation | ⏳ |
-| T-412 | Generate positive outcome video | ⏳ |
-| T-413 | Generate neutral outcome video | ⏳ |
-| T-414 | Generate negative outcome video | ⏳ |
-| T-415 | Review and iterate on generated videos | ⏳ |
-| T-416 | Finalize all videos (min 30 seconds each) | ⏳ |
+| T-411 | Write prompts for PixVerse video generation | ✅ |
+| T-412 | Generate positive outcome video | ✅ |
+| T-413 | Generate neutral outcome video | ✅ |
+| T-414 | Generate negative outcome video | ✅ |
+| T-415 | Review and iterate on generated videos | ✅ |
+| T-416 | Finalize all videos (min 30 seconds each) | ✅ |
 
 ### Documentation
 | Task ID | Task Description | Status |
 |---------|-------------------|--------|
-| T-421 | Document all prompts used for video generation | ⏳ |
-| T-422 | Create video metadata file (title, description, etc.) | ⏳ |
+| T-421 | Document all prompts used for video generation | ✅ |
+| T-422 | Create video metadata file (title, description, etc.) | ✅ |
 
 ---
 
