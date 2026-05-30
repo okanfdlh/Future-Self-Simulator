@@ -82,7 +82,7 @@ export async function GET(req, { params }) {
     }
   }
 
-  const rootDir = path.join(process.cwd(), "pixverse-output")
+  const rootDir = path.join(/*turbopackIgnore: true*/ process.cwd(), "pixverse-output")
   const filePath = findFileRecursive(rootDir, videoId)
   if (!filePath) return NextResponse.json({ error: "video_not_found" }, { status: 404 })
 
