@@ -24,7 +24,6 @@
 .DS_Store
 *.pem
 member1.md
-/pixverse-output
 
 # debug
 npm-debug.log*
